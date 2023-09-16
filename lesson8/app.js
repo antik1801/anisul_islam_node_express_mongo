@@ -6,6 +6,18 @@ const userRouter = require("./routes/users.route")
 app.use("/api/user",userRouter);
 
 
+app.use("/register", (req,res) =>{
+    // res.status(200).json({
+    //     "message": "I am register page",
+    //     statusCode: 200
+    // })
+    res.redirect("/login")
+})
+
+app.use("/login", (req,res) =>{
+    res.send("Hi I am login page")
+})
+
 // http:localhost:3000/
 
 app.get("/", (req,res) =>{

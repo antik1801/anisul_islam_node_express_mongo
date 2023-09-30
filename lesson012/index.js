@@ -1,13 +1,12 @@
-require('dotenv').config()
+// require("dotenv").config()
 const express = require("express")
 const app = express()
-const PORT = process.env.PORT || 3000;
+const PORT = process.env.PORT || 3000
 
-app.use(express.static("public"));
+app.use(express.static("public"))
 
 app.get("/", (req, res) =>{
     res.sendFile(__dirname+"/index.html")
-    // res.send("I am from home routes")
 })
 
 app.listen(PORT, ()=>{

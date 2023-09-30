@@ -8,7 +8,7 @@ app.get("/products/:id([0-9]+)", (req, res) =>{
     })
 })
 
-app.get("/products/:title([a-zA-Z]+)", (req,res) =>{
+app.get("/products/:title([a-zA-Z0-9]+)", (req,res) =>{
     res.send(
         {
             message: `The product title is ${req.params.title}`,

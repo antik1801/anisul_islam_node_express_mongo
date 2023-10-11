@@ -1,37 +1,68 @@
-const getAllUsers = (req,res)=>{
-    res.status(200).json({
-        success: true,
-        message: "All users returned"
-    })
-}
+const { v4: uuidv4 } = require("uuid");
+const User = require("../models/user.model");
 
-const getOneUser = (req,res)=>{
-    res.status(200).json({
-        success: true,
-        message: "Get One user"
-    })
-}
+const getAllUsers = async (req, res) => {
+  try {
+    const users = await User.find();
+    res.status(200).json(users);
+  } catch (error) {
+    res.status(500).json({
+      message: error.message,
+    });
+  }
+};
 
-const createUser = (req,res)=>{
-    res.status(201).json({
-        success: true,
-        message: "User is created"
-    })
-}
+const getOneUser = async (req, res) => {
+  try {
+    const user = await User.findOne({ id: req.params.id });
+    res.status(200).json(user);
+  } catch (error) {
+    res.status(500).send(error.message);
+  }
+};
 
-const updateUser = (req,res)=>{
-    res.status(202).json({
-        success: true,
-        message: "User is updated"
-    })
-}
+// create new user
+const createUser = async (req, res) => {
+  try {
+    const newUser = new User({
+      id: uuidv4(),
+      name: req.body.name,
+      age: Number(req.body.age),
+    });
+    await newUser.save(); // save method to create a new user 
+    res.status(201).json(newUser);
+  } catch (error) {
+    res.status(500).send(error.message);
+  }
+};
 
-const deleteUser = (req,res)=>{
-    res.status(200).json({
-        success: true,
-        message: "User is deleted"
-    })
-}
+const updateUser = async(req, res) => {
+    try {
+        const user = await User.findOne({ id: req.params.id });
+        user.name = req.body.name;
+        user.age = Number(req.body.age);
+        await user.save();
+        res.status(201).json(user);
+      } catch (error) {
+        res.status(500).send(error.message);
+      }
+};
 
+const deleteUser = async(req, res) => {
+    try {
+        await User.deleteOne({ id: req.params.id })
+        res.status(200).json({
+            message: "User is deleted",
+        });
+      } catch (error) {
+        res.status(500).send(error.message);
+      }
+};
 
-module.exports = {getAllUsers, getOneUser, createUser, updateUser, deleteUser}
+module.exports = {
+  getAllUsers,
+  getOneUser,
+  createUser,
+  updateUser,
+  deleteUser,
+};
